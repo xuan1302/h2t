@@ -1,12 +1,11 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import PostsFeature from '../features/Posts'
+import ProductsFeature from '../features/Products'
 import About from '../pages/About'
-import Blog from '../pages/Blog'
 import Faq from '../pages/Faq'
 import Home from '../pages/Home'
 import NotFound from '../pages/NotFound'
-import Products from '../pages/Products'
 
 
 const routers = [
@@ -27,12 +26,12 @@ const routers = [
     },
     {
         path: '/products',
-        exact: true,
-        component: Products
+        // exact: true,
+        component: ProductsFeature
     },
     {
         path: '/blog',
-        exact: true,
+        // exact: true,
         component: PostsFeature
     },
     {

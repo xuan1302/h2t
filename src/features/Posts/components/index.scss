@@ -9,3 +9,35 @@
 .item-blog{
     cursor: pointer;
 }
+.single-text{
+    margin: 25px 0;
+}
+
+.sidebar-blog{
+    padding:15px;
+    border: 1px solid #e3e5ec;
+}
+.title-sidebar{
+    padding-bottom:10px;
+    border-bottom:2px solid #000;
+}
+.list-news-latest{
+    .item-post{
+        display: flex;
+        cursor: pointer;
+        .post-image{
+            float: none;
+        }
+        .post-content{
+            h3{
+                font-size: 16px;
+                font-weight: bold;
+            }
+        }
+    }
+}
+@media (min-width: 992px){
+    .col-md-9{
+        width: 70%;
+    }
+}

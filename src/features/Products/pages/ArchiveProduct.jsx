@@ -1,6 +1,5 @@
 import React from 'react';
-import Breadcrumb from '../components/Breadcrumb/Breadcrumb';
-
+import Breadcrumb from '../../../components/Breadcrumb/Breadcrumb';
 
 const itemsBreadcrumb = [
     {
@@ -8,7 +7,8 @@ const itemsBreadcrumb = [
         text: "Products"
     }
 ]
-function Products(props) {
+
+function ArchiveProduct(props) {
     return (
         <>
             <Breadcrumb items={itemsBreadcrumb} className="breadcrumb" />
@@ -16,4 +16,4 @@ function Products(props) {
     );
 }
 
-export default Products;
+export default ArchiveProduct;

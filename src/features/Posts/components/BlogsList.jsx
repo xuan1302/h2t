@@ -20,7 +20,6 @@ function BlogsList({ listBlogs }) {
                             </Grid>
                         ))
                     }
-
                 </Grid>
             </Box>
         </>
