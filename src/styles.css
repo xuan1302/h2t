@@ -1903,7 +1903,7 @@ table.table-cart tr td.remove{text-align: right;}
 	padding-left: 20px;
 	overflow: hidden;
 }
-.sidebox-policy ul li:before {
+/* .sidebox-policy ul li:before {
 	font-family: FontAwesome;
 	font-style: normal;
 	font-weight: normal;
@@ -1916,7 +1916,7 @@ table.table-cart tr td.remove{text-align: right;}
 	transition: all 0.4s ease-in-out 0s;
 	-webkit-transition: all 0.4s ease-in-out 0s;
 	-moz-transition: all 0.4s ease-in-out 0s;
-}
+} */
 /*---------------------------------------------------------------------------------
 PAGINATION - 404 - SEARCH PAGE 
 -------------------------------------------------------------------------------- */

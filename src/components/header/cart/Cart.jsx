@@ -1,11 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import './style.scss';
+import { useSelector } from 'react-redux';
+import { cartItemCountSelector, cartItemTotalSelector } from '../../../features/Cart/selector'
+import { Link } from 'react-router-dom';
 
 function Cart(props) {
 
     const ref = useRef()
+    const countItemCart = useSelector(cartItemCountSelector);
+    const totalCart = useSelector(cartItemTotalSelector);
     const [showCart, setShowCart] = useState(false)
+    const listProduct = useSelector(state => state.cart.cartItems);
     const handleCartClick = (e) => {
         setShowCart(!showCart)
     }
@@ -33,7 +39,7 @@ function Cart(props) {
                     <span className="box-icon">
                         <ShoppingCartIcon />
                         <span className="count-holder">
-                            <span className="count">0</span>
+                            <span className="count">{countItemCart}</span>
                         </span>
                     </span>
                 </div>
@@ -47,24 +53,54 @@ function Cart(props) {
                                 <div className="cart-view clearfix">
                                     <div className="cart-view-scroll">
                                         <table id="cart-view">
-
-                                            <tbody><tr className="item-cart_empty">
-                                                <td>
-                                                    Hiện chưa có sản phẩm
-                                                </td>
-                                            </tr>
-
-                                            </tbody></table>
+                                            <tbody>
+                                                {
+                                                    listProduct.length > 0 && (
+                                                        listProduct.map(data => (
+                                                            <tr key={data.id} className="item_2">
+                                                                <td className="img">
+                                                                    <img src={data.product.thumbnail} alt={data.product.name} />
+                                                                </td>
+                                                                <td>
+                                                                    <p className="pro-title">
+                                                                        <a className="pro-title-view" title={data.product.name}>{data.product.name}</a>
+                                                                    </p>
+                                                                    <div className="mini-cart_quantity">
+                                                                        <div className="pro-quantity-view"><span className="qty-value">{data.quantity}</span></div>
+                                                                        <div className="pro-price-view">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.product.price)}</div>
+                                                                    </div>
+                                                                    <div className="remove_link remove-cart">
+                                                                        x
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))
+                                                    )
+                                                }
+                                                {
+                                                    listProduct.length === 0 && (
+                                                        <tr className="item-cart_empty">
+                                                            <td>
+                                                                Hiện chưa có sản phẩm
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
                                     </div>
                                     <div className="line"></div>
                                     <div className="cart-view-total">
                                         <table className="table-total">
-                                            <tbody><tr>
-                                                <td className="text-left">TỔNG TIỀN:</td>
-                                                <td className="text-right" id="total-view-cart">0₫</td>
-                                            </tr>
+                                            <tbody>
                                                 <tr>
-                                                    <td><a href="/cart" className="linktocart button dark">Xem giỏ hàng</a></td>
+                                                    <td className="text-left">TỔNG TIỀN:</td>
+                                                    <td className="text-right" id="total-view-cart">
+                                                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalCart)}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><Link to='/cart' className="linktocart button dark">Xem giỏ hàng</Link></td>
                                                     <td><a href="/checkout" className="linktocheckout button dark">Thanh toán</a></td>
                                                 </tr>
                                             </tbody></table>

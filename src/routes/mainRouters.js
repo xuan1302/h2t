@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
+import CartFeature from '../features/Cart'
 import PostsFeature from '../features/Posts'
 import ProductsFeature from '../features/Products'
 import About from '../pages/About'
@@ -33,6 +34,11 @@ const routers = [
         path: '/blog',
         // exact: true,
         component: PostsFeature
+    },
+    {
+        path: '/cart',
+        // exact: true,
+        component: CartFeature
     },
     {
         path: '*',

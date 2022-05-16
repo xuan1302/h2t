@@ -4,3 +4,15 @@
     right: 0;
     left: auto;
 }
+.wrapbox-content-cart{
+    display: flex;
+    .contentCart-detail{
+        width: 60%;
+    }
+    .sidebarCart-sticky{
+        width: 40%;
+    }
+}
+.sidebox-order_action .btncart-checkout{
+    width: auto;
+}
