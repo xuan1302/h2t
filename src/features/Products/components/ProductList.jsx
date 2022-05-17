@@ -9,14 +9,14 @@ ProductList.propTypes = {
 ProductList.defaultProps = {
     data: [],
 }
-function ProductList({ data }) {
+function ProductList({ data, col = 4 }) {
     return (
         <Box>
             {
                 data.length > 0 && (
                     <Grid container className='list-prodct-archive'>
                         {data.map((product) => (
-                            <Grid item key={product.id} sm={6} md={4} lg={4}>
+                            <Grid item key={product.id} sm={6} md={col} lg={col}>
                                 <Product data={product} />
                             </Grid>
                         ))}

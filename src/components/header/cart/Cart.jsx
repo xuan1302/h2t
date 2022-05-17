@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import './style.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cartItemCountSelector, cartItemTotalSelector } from '../../../features/Cart/selector'
 import { Link } from 'react-router-dom';
+import { removeFromCart } from '../../../features/Cart/cartSlice';
 
 function Cart(props) {
 
@@ -12,6 +13,7 @@ function Cart(props) {
     const totalCart = useSelector(cartItemTotalSelector);
     const [showCart, setShowCart] = useState(false)
     const listProduct = useSelector(state => state.cart.cartItems);
+    const dispath = useDispatch();
     const handleCartClick = (e) => {
         setShowCart(!showCart)
     }
@@ -32,6 +34,10 @@ function Cart(props) {
             document.removeEventListener("mousedown", checkIfClickedOutside)
         }
     }, [showCart])
+    const hanldeRemoveItemcart = (id) => {
+        const action = removeFromCart(id)
+        dispath(action)
+    }
     return (
         <div className="header-action header-action_cart show-action" ref={ref}>
             <div className="header-action_text" onClick={handleCartClick}>
@@ -69,7 +75,7 @@ function Cart(props) {
                                                                         <div className="pro-quantity-view"><span className="qty-value">{data.quantity}</span></div>
                                                                         <div className="pro-price-view">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.product.price)}</div>
                                                                     </div>
-                                                                    <div className="remove_link remove-cart">
+                                                                    <div className="remove_link remove-cart" onClick={() => hanldeRemoveItemcart(data.id)}>
                                                                         x
                                                                     </div>
                                                                 </td>
@@ -100,8 +106,8 @@ function Cart(props) {
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td><Link to='/cart' className="linktocart button dark">Xem giỏ hàng</Link></td>
-                                                    <td><a href="/checkout" className="linktocheckout button dark">Thanh toán</a></td>
+                                                    <td><Link to='/cart' className="linktocart button dark" onClick={handleCartClick}>Xem giỏ hàng</Link></td>
+                                                    <td><a className="linktocheckout button dark">Thanh toán</a></td>
                                                 </tr>
                                             </tbody></table>
                                     </div>

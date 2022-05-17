@@ -1865,12 +1865,21 @@ table.table-cart tr td.remove{text-align: right;}
 	font-size: 15px;
 	padding: 20px 15px;
 	outline: none;
-	width: 100%!important;
+	width: 97%!important;
 	min-height: 130px;
 	font-weight: 500;
 	border: 1px solid transparent;
 	transition: all 150ms linear;
 	-webkit-appearance: none;-ms-appearance: none;appearance: none;
+}
+.service--list{
+    justify-content: center;
+}
+.main-content-cart{
+	margin-bottom:15px;
+}
+.right-content-cart-detail{
+	width: 40%;
 }
 .cart-buttons a,.cart-buttons .btn-checkout, .cart-buttons .btn-update{
 	display: inline-block;vertical-align: top;padding: 19px 20px;
@@ -3717,8 +3726,12 @@ svg.ruler-icon.base {
 } 
 
 .service--list .item {
-	flex: 0 0 calc(100% / 3);
+	/* flex: 0 0 calc(100% / 3); */
 	padding-left: 10px;
+	width: 20%;
+}
+.service--list .item svg{
+	font-size: 48px;
 }
 .service--list {
 	margin-left: -10px;

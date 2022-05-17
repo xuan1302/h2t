@@ -3,9 +3,9 @@ import { Autoplay } from 'swiper';
 import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import imgSlide1 from '../../assets/images/slideshow_1.png';
-import imgSlide2 from '../../assets/images/slideshow_2.png';
-import imgSlide3 from '../../assets/images/slideshow_3.png';
+import imgSlide1 from '../../../assets/images/slideshow_1.png';
+import imgSlide2 from '../../../assets/images/slideshow_2.png';
+import imgSlide3 from '../../../assets/images/slideshow_3.png';
 
 
 function HomeSlide(props) {

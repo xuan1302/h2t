@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cartItemTotalSelector, cartItemCountSelector } from './selector';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import { Input } from '@mui/material';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-
+import { removeFromCart } from './cartSlice';
 CartFeature.propTypes = {
 
 };
@@ -16,10 +16,18 @@ const itemsBreadcrumb = [
     },
 ]
 function CartFeature(props) {
+    const dispath = useDispatch();
     const totalCart = useSelector(cartItemTotalSelector);
     const countItemCart = useSelector(cartItemCountSelector)
     const listProduct = useSelector(state => state.cart.cartItems);
     console.log(listProduct)
+    const handleRemoveItemCart = (id) => {
+        const action = removeFromCart(id)
+        dispath(action)
+    }
+    const handleChangeQuantity = () => {
+        console.log()
+    }
     return (
         <div className='cart-page layoutPage-cart'>
             <Breadcrumb items={itemsBreadcrumb} className="breadcrumb" />
@@ -33,84 +41,95 @@ function CartFeature(props) {
                 <div className='row wrapbox-content-cart'>
                     <div className="col-md-8 col-sm-8 col-xs-12 contentCart-detail">
                         <div className="cart-container">
-                            <div className="cart-col-left">
-                                <div className="main-content-cart">
-                                    <form action="/cart" method="post" id="cartformpage">
-                                        <div className="">
-                                            <div className="">
-                                                <table className="table-cart">
-                                                    <thead>
-                                                        <tr>
-                                                            <th className="image">&nbsp;</th>
-                                                            <th className="item">Tên sản phẩm</th>
-                                                            <th className="remove">&nbsp;</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr className="line-item-container">
-                                                            <td className="image">
-                                                                <div className="product_image">
-                                                                    <a href="">
-                                                                        <img src="" alt="" />
-                                                                    </a>
-                                                                </div>
-                                                            </td>
-                                                            <td className="item">
-                                                                <h3><a href="">Áo Thun Simwood Denim "My Life is Good" 1539 </a></h3>
-                                                                <p>
-                                                                    <span className="pri">295,000₫</span>
-                                                                </p>
-                                                                <p className="variant">
-                                                                    <span className="variant_title">S / VÀNG</span>
-                                                                </p>
-                                                                <div className="qty quantity-partent qty-click clearfix">
-                                                                    <button type="button" className="qtyminus qty-btn">-</button>
-                                                                    <input />
-                                                                    <button type="button" className="qtyplus qty-btn">+</button>
-                                                                </div>
-                                                                <p className="price">
-                                                                    <span className="text">Thành tiền:</span>
-                                                                    <span className="line-item-total">590,000₫</span>
-                                                                </p>
+                            {
+                                listProduct.length > 0 && (
+                                    <div className="cart-col-left">
+                                        <div className="main-content-cart">
+                                            <form action="/cart" method="post" id="cartformpage">
+                                                <div className="">
+                                                    <div className="">
+                                                        <table className="table-cart">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th className="image">&nbsp;</th>
+                                                                    <th className="item">Tên sản phẩm</th>
+                                                                    <th className="remove">&nbsp;</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {
+                                                                    listProduct.map(data => (
+                                                                        <tr className="line-item-container" key={data.id}>
+                                                                            <td className="image">
+                                                                                <div className="product_image">
+                                                                                    <img src={data.product.thumbnail} alt={data.product.name} />
+                                                                                </div>
+                                                                            </td>
+                                                                            <td className="item">
+                                                                                <h3>{data.product.name}</h3>
+                                                                                <p>
+                                                                                    <span className="pri">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.product.price)}</span>
+                                                                                </p>
+                                                                                {/* <div className="qty quantity-partent qty-click clearfix">
+                                                                                    <button type="button" className="qtyminus qty-btn">-</button>
+                                                                                    <input value={data.quantity} />
+                                                                                    <button type="button" className="qtyplus qty-btn">+</button>
+                                                                                </div> */}
+                                                                                <Input id="quantity-product" value={data.quantity} type="number" onChange={() => handleChangeQuantity()} />
 
-                                                            </td>
-                                                            <td className="remove">
-                                                                <a href="" className="cart">
-                                                                    xoa
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div className="">
-                                            <div className="">
-                                                <div className="sidebox-group">
-                                                    <h4>Ghi chú đơn hàng</h4>
-                                                    <div className="checkout-note clearfix">
-                                                        <textarea id="note" name="note" rows="4" placeholder="Ghi chú"></textarea>
+                                                                                <p className="price">
+                                                                                    <span className="text">Thành tiền:</span>
+                                                                                    <span className="line-item-total">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.quantity * data.product.price)}</span>
+                                                                                </p>
+
+                                                                            </td>
+                                                                            <td className="remove">
+                                                                                <a className="cart" onClick={() => handleRemoveItemCart(data.id)}>
+                                                                                    Xóa
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    ))
+
+                                                                }
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="">
-                                                <div className="sidebox-group sidebox-policy">
-                                                    <h4>Chính sách mua hàng</h4>
-                                                    <ul>
-                                                        <li><ArrowRightAltIcon /> Sản phẩm được đổi 1 lần duy nhất, không hỗ trợ trả.</li>
-                                                        <li><ArrowRightAltIcon />Sản phẩm còn đủ tem mác, chưa qua sử dụng.</li>
-                                                        <li><ArrowRightAltIcon />Sản phẩm nguyên giá được đổi trong 30 ngày trên toàn hệ thống</li>
-                                                        <li><ArrowRightAltIcon />Sản phẩm sale chỉ hỗ trợ đổi size (nếu cửa hàng còn) trong 7 ngày trên toàn hệ thống.</li>
-                                                    </ul>
+                                                <div className="">
+                                                    <div className="">
+                                                        <div className="sidebox-group">
+                                                            <h4>Ghi chú đơn hàng</h4>
+                                                            <div className="checkout-note clearfix">
+                                                                <textarea id="note" name="note" rows="4" placeholder="Ghi chú"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="">
+                                                        <div className="sidebox-group sidebox-policy">
+                                                            <h4>Chính sách mua hàng</h4>
+                                                            <ul>
+                                                                <li><ArrowRightAltIcon /> Sản phẩm được đổi 1 lần duy nhất, không hỗ trợ trả.</li>
+                                                                <li><ArrowRightAltIcon />Sản phẩm còn đủ tem mác, chưa qua sử dụng.</li>
+                                                                <li><ArrowRightAltIcon />Sản phẩm nguyên giá được đổi trong 30 ngày trên toàn hệ thống</li>
+                                                                <li><ArrowRightAltIcon />Sản phẩm sale chỉ hỗ trợ đổi size (nếu cửa hàng còn) trong 7 ngày trên toàn hệ thống.</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
-                                    </form>
-                                </div>
-                            </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                listProduct.length === 0 && (
+                                    <h3>Giỏ hàng của bạn trống</h3>
+                                )
+                            }
                         </div>
                     </div>
-                    <div className="col-md-4 col-sm-4 col-xs-12 sidebarCart-sticky">
+                    <div className="col-md-4 col-sm-4  right-content-cart-detail">
                         <div className="sidebox-order">
                             <div className="sidebox-order-inner">
                                 <div className="sidebox-order_title">
@@ -118,7 +137,7 @@ function CartFeature(props) {
                                 </div>
                                 <div className="sidebox-order_total">
                                     <p>Tổng tiền:
-                                        <span className="total-price">590,000₫</span>
+                                        <span className="total-price">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalCart)}</span>
                                     </p>
                                 </div>
                                 <div className="sidebox-order_text">
