@@ -20,7 +20,6 @@ function CartFeature(props) {
     const totalCart = useSelector(cartItemTotalSelector);
     const countItemCart = useSelector(cartItemCountSelector)
     const listProduct = useSelector(state => state.cart.cartItems);
-    console.log(listProduct)
     const handleRemoveItemCart = (id) => {
         const action = removeFromCart(id)
         dispath(action)

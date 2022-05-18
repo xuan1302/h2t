@@ -17,8 +17,8 @@ function Header(props) {
                         <Menu />
                         <div className="header-upper-icon">
                             <div className="header-wrap-icon">
-                                {/* <Search />
-                                <Account /> */}
+                                <Search />
+                                {/* <Account /> */}
                                 <Cart />
                             </div>
                         </div>

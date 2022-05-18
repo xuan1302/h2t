@@ -1,14 +1,64 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './style.scss';
+import productsApi from '../../../api/productApi';
 
 function Search(props) {
+    const ref = useRef()
     const [showFormSearch, setShowFormSearch] = useState(false);
+    const [resultSearch, setResultSearch] = useState([]);
+    const [totalResult, setTotalResult] = useState(0);
+    const [dataSearch, setDataSearch] = useState('');
+
     const handleClickSearch = () => {
         setShowFormSearch(!showFormSearch)
+        setDataSearch('')
+        setResultSearch([])
     }
+
+    useEffect(() => {
+        const checkIfClickedOutside = e => {
+            // If the menu is open and the clicked target is not within the menu,
+            // then close the menu
+            if (showFormSearch && ref.current && !ref.current.contains(e.target)) {
+                setShowFormSearch(false)
+            }
+        }
+
+        document.addEventListener("mousedown", checkIfClickedOutside)
+
+        return () => {
+            // Cleanup the event listener
+            document.removeEventListener("mousedown", checkIfClickedOutside)
+        }
+
+    }, [showFormSearch])
+
+    const hanldeSearchProduct = (data) => {
+        setDataSearch(data)
+    }
+    const params = {
+        name_like: dataSearch,
+        _limit: 5
+    }
+    useEffect(() => {
+        (
+            async () => {
+                try {
+                    if (dataSearch) {
+                        const { data, pagination } = await productsApi.getAll(params);
+                        setResultSearch(data)
+                        setTotalResult(pagination._totalRows)
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        )();
+    }, [dataSearch])
+
     return (
-        <div className="header-action header-action_search" >
+        <div className="header-action header-action_search" ref={ref}>
             <div className="header-action_text" onClick={handleClickSearch}>
                 <div className="header-action__link header-action-toggle" id="site-search-handle" aria-label="Tìm kiếm" title="Tìm kiếm">
                     <span className="box-icon">
@@ -29,15 +79,43 @@ function Search(props) {
                             <div className="site_search">
 
                                 <div className="search-box wpo-wrapper-search">
-                                    {/* <form className="searchform searchform-categoris ultimate-search">
-                                    <div className="wpo-search-inner">
-                                        <input type="hidden" name="type" value="product">
-                                            <input required="" id="inputSearchAuto" name="q" maxlength="40" autocomplete="off" className="searchinput input-search search-input" type="text" size="20" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
+                                    <div className="searchform searchform-categoris ultimate-search">
+                                        <div className="wpo-search-inner">
+                                            <input placeholder='Tìm kiếm sản phẩm' value={dataSearch} onChange={(e) => hanldeSearchProduct(e.target.value)} />
+                                        </div>
+                                        <button type="submit" className="btn-search btn" id="search-header-btn" aria-label="Tìm kiếm">
+                                            Search
+                                        </button>
+                                    </div>
+                                    {
+                                        resultSearch.length > 0 && (
+                                            <div className="resultsContent">
+                                                {
+                                                    resultSearch.map(data => (
+                                                        <div className="item-ult" key={data.id}>
+                                                            <div className="thumbs">
+                                                                <img alt={data.name} src={data.thumbnail} />
+                                                            </div>
+                                                            <div className="title">
+                                                                <a title={data.name} >{data.name}</a>
+                                                                <p className="f-initial">
+                                                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.price)}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                }
+                                                <div className="resultsMore">
+                                                    <a >Xem thêm {totalResult} sản phẩm</a>
+                                                </div>
                                             </div>
-                                            <button type="submit" className="btn-search btn" id="search-header-btn" aria-label="Tìm kiếm">
-                                                <svg version="1.1" className="svg search" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 27" style="enable-background:new 0 0 24 27;" xml:space="preserve"><path d="M10,2C4.5,2,0,6.5,0,12s4.5,10,10,10s10-4.5,10-10S15.5,2,10,2z M10,19c-3.9,0-7-3.1-7-7s3.1-7,7-7s7,3.1,7,7S13.9,19,10,19z"></path><rect x="17" y="17" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -9.2844 19.5856)" width="4" height="8"></rect></svg>
-                                            </button>
-                                        </form> */}
+                                        )
+                                    }
+                                    {
+                                        resultSearch.length === 0 && dataSearch !== '' && (
+                                            <h4 className='text-center' style={{ marginTop: '10px' }}>Không có sản phẩm nào.</h4>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </div>
