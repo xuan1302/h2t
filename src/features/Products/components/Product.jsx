@@ -31,8 +31,6 @@ function Product({ data }) {
                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.price)}
                 </div>
             </Box>
-
-
         </Box>
     );
 }
