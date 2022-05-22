@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import firebase from 'firebase/compat/app';
 const axiosClient = axios.create({
     baseURL: 'https://x-json-api.herokuapp.com/api/',
     headers: {
@@ -7,11 +7,39 @@ const axiosClient = axios.create({
     },
 });
 
+const getFirebaseToken = async () => {
+    const currentUser = firebase.auth().currentUser;
+    if (currentUser) return currentUser.getIdToken();
+
+    //not login
+    const hasRememberedAccount = localStorage.getItem('firebaseui::rememberedAccounts');
+    if (!hasRememberedAccount) return null;
+
+    //login but cuurent user is not fetched
+    return new Promise((resolve, reject) => {
+        const waitTimer = setTimeout(() => {
+            reject(null);
+        }, 10000)
+        const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
+            if (!user) {
+                reject(null);
+            }
+            const token = await user.getIdToken();
+            resolve(token);
+            unregisterAuthObserver();
+            clearTimeout(waitTimer);
+        });
+    });
+}
 
 //  Interceptors
 // Add a request interceptor
-axiosClient.interceptors.request.use(function (config) {
+axiosClient.interceptors.request.use(async (config) => {
     // Do something before request is sent
+    const token = await getFirebaseToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
 }, function (error) {
     // Do something with request error

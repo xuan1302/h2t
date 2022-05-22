@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
+import Login from '../features/Auth/Pages/Login'
 import CartFeature from '../features/Cart'
 import PostsFeature from '../features/Posts'
 import ProductsFeature from '../features/Products'
@@ -37,8 +38,13 @@ const routers = [
     },
     {
         path: '/cart',
-        // exact: true,
+        exact: true,
         component: CartFeature
+    },
+    {
+        path: '/login',
+        exact: true,
+        component: Login
     },
     {
         path: '*',

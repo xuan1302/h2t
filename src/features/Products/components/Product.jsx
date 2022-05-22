@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import { useHistory } from 'react-router-dom';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 Product.propTypes = {
     data: PropTypes.object,
@@ -22,7 +23,10 @@ function Product({ data }) {
                     {data.isPromotion && (
                         <span className='promotion'>Khuyến mãi</span>
                     )}
-                    <img src={data.thumbnail} alt={data.name} width="100%" />
+                    <LazyLoadImage
+                        src={data.thumbnail} alt={data.name} width="100%"
+                    />
+                    {/* <img src={data.thumbnail} alt={data.name} width="100%" /> */}
                 </div>
                 <h3 className='title-product-archive' >
                     {data.name}
