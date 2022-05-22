@@ -15,6 +15,7 @@ import ProductInfo from '../components/ProductInfo';
 import AddToCartForm from '../components/AddToCartForm';
 import { addToCart } from '../../Cart/cartSlice';
 import { useDispatch } from 'react-redux';
+import { useSnackbar } from 'notistack';
 
 SingleProduct.propTypes = {
 
@@ -23,6 +24,7 @@ SingleProduct.propTypes = {
 function SingleProduct(props) {
     // const routerMatch = useRouteMatch();
     // const productId = routerMatch.params.productId;
+    const { enqueueSnackbar } = useSnackbar();
     const { params: { productId }, url } = useRouteMatch();
     const { product, loading } = useProductDetail(productId);
     const dispath = useDispatch();
@@ -46,6 +48,7 @@ function SingleProduct(props) {
             quantity: formValues.quantity,
         });
         dispath(action);
+        enqueueSnackbar('Thêm sản phẩm thành công', { variant: 'success' });
     }
 
     return (

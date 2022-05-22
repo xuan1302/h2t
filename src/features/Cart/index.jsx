@@ -6,6 +6,7 @@ import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import { Input } from '@mui/material';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { removeFromCart } from './cartSlice';
+import { useSnackbar } from 'notistack';
 CartFeature.propTypes = {
 
 };
@@ -16,6 +17,7 @@ const itemsBreadcrumb = [
     },
 ]
 function CartFeature(props) {
+    const { enqueueSnackbar } = useSnackbar();
     const dispath = useDispatch();
     const totalCart = useSelector(cartItemTotalSelector);
     const countItemCart = useSelector(cartItemCountSelector)
@@ -23,6 +25,7 @@ function CartFeature(props) {
     const handleRemoveItemCart = (id) => {
         const action = removeFromCart(id)
         dispath(action)
+        enqueueSnackbar('Xóa sản phẩm thành công', { variant: 'warning' });
     }
     const handleChangeQuantity = () => {
         console.log()

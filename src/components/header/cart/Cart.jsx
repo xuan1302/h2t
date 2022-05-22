@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { cartItemCountSelector, cartItemTotalSelector } from '../../../features/Cart/selector'
 import { Link } from 'react-router-dom';
 import { removeFromCart } from '../../../features/Cart/cartSlice';
+import { useSnackbar } from 'notistack';
 
 function Cart(props) {
 
     const ref = useRef()
+    const { enqueueSnackbar } = useSnackbar();
     const countItemCart = useSelector(cartItemCountSelector);
     const totalCart = useSelector(cartItemTotalSelector);
     const [showCart, setShowCart] = useState(false)
@@ -37,6 +39,7 @@ function Cart(props) {
     const hanldeRemoveItemcart = (id) => {
         const action = removeFromCart(id)
         dispath(action)
+        enqueueSnackbar('Xóa sản phẩm thành công', { variant: 'warning' });
     }
     return (
         <div className="header-action header-action_cart show-action" ref={ref}>
